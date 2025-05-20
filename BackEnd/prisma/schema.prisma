@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id Int @id  @default(autoincrement())
+  username String @db.VarChar(100)
+  email String @unique @db.VarChar(150)
+  password String @db.VarChar(100)
+  token String? @db.VarChar(100)
+  premium Boolean @default(false)
+
+  ItineraryUsers Itinerary_Users[]
+}
+
+model Request{
+  id Int @id  @default(autoincrement()) 
+  itinerary_id Int
+  request String
+  finished Boolean @default(false)
+
+}
+
+
+model Budget{
+  id Int @id  @default(autoincrement())
+  itinerary_id Int
+  estimated_budget Decimal @default(0)
+  actual_budget Decimal @default(0)
+  type String @db.VarChar(50)
+
+  itinerary Itinerary @relation(fields: [itinerary_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Itinerary_Users{
+  id Int @id  @default(autoincrement())
+  user_id Int
+  itinerary_id Int
+  role String @db.VarChar(20)
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  itinerary Itinerary @relation(fields: [itinerary_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([user_id, itinerary_id], name: "user_id_itinerary_id_unique")
+}
+
+model Itinerary{
+  id Int @id  @default(autoincrement())
+  name String @db.VarChar(100)
+  created_date DateTime
+  updated_date DateTime
+  start_date DateTime
+  end_date DateTime
+  finished Boolean @default(false)
+
+  // Itinerary_Destinations Itinerary_Destinations[]
+  ItineraryUsers Itinerary_Users[]
+  Schedule_Per_Day Schedule_Per_Day[]
+  Budget Budget[]
+  Accomodation Accomodation[]
+}
+
+// model Itinerary_Destinations{
+//   id Int @id  @default(autoincrement())
+//   itinerary_id Int
+//   destination_id Int
+//   accomodation_id Int?
+//   start_date DateTime
+//   end_date DateTime
+
+//   destination Destination @relation(fields:[destination_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   itinerary Itinerary @relation(fields: [itinerary_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
+  
+//   accomodation Accomodation? @relation(fields: [accomodation_id], references: [id])
+
+//   Ticket Ticket[]
+// }
+
+
+
+model Accomodation {
+  id               Int      @id @default(autoincrement())
+  itinerary_id     Int
+  name             String   @db.VarChar(2083)    // Name of the accommodation
+  address          String   @db.VarChar(2083)    // Address of the accommodation
+  location_link   String   @db.VarChar(2083)    // Image URL
+  cost             Decimal  @default(0.0)        // Cost of accommodation
+  people           Int      @default(0)          // Number of people/occupants
+  // Itinerary_Destinations Itinerary_Destinations[] // Relation to itinerary destinations
+  Itinerary Itinerary @relation(fields: [itinerary_id], references: [id], onDelete: Cascade)
+}
+
+// model Destination{
+//   id Int @id @default(autoincrement())
+//   name String @db.VarChar(100)
+//   province String @db.VarChar(100)
+//   destination_api_id Int @unique
+
+//   // Itinerary_Destinations Itinerary_Destinations[]
+// }
+
+model Schedule_Per_Day{
+  id Int @id @default(autoincrement())
+  itinerary_id Int
+  date DateTime 
+
+  Itinerary Itinerary @relation(fields: [itinerary_id], references: [id], onDelete: Cascade)
+  Activity Activity[]
+  @@unique([itinerary_id, date])
+}
+
+
+
+model Activity{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.Text
+  start_time DateTime
+  end_time DateTime
+  type String @db.VarChar(50)
+  cost Decimal
+  day_id Int
+  location_name String
+  location_address String
+  location_link String
+  location_name2 String?
+  location_address2 String?
+  location_link2 String?
+  method String?
+
+  schedulePerDay Schedule_Per_Day @relation(fields: [day_id], references: [id], onDelete: Cascade)
+
+}
+
+// model Location {
+//   id               Int      @id @default(autoincrement())
+//   name             String   @db.VarChar(2083) // Name of the location
+//   address          String   @db.VarChar(2083) // Address of the location
+//   description      String   @db.Text         // Description of the location
+//   location_image   String   @db.VarChar(2083) // Image URL
+//   place_id         String   @unique @db.VarChar(100) @default("") // Unique identifier from the API
+//   place_api        String   @db.VarChar(255) @default("") // API source
+//   categories       String[] @db.VarChar(2083) // List of categories
+//   opening_hours    String?  @db.VarChar(255) // Opening hours (optional)
+//   website          String?  @db.VarChar(2083) // Website URL (optional)
+//   phone            String?  @db.VarChar(50) // Phone number (optional)
+
+//   Activity         Activity[] // Relation to activities
+// }
+
+model Ticket{
+  id Int @id @default(autoincrement())
+  itinerary_destination_id Int
+  ticket_image String @db.VarChar(2083)
+  type String @db.VarChar(20)
+
+  // itineraryDestination Itinerary_Destinations @relation(fields: [itinerary_destination_id], references: [id])
+}
+
+model Transportation{
+  id Int @id @default(autoincrement())
+}
+
+
+
+
+
+

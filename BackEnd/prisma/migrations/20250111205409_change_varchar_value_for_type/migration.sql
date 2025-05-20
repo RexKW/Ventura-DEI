@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Activity" ALTER COLUMN "type" SET DATA TYPE VARCHAR(50);
+
+-- AlterTable
+ALTER TABLE "Budget" ALTER COLUMN "type" SET DATA TYPE VARCHAR(50);
