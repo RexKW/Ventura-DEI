@@ -8,6 +8,8 @@ import BudgetItinerary from '../components/BudgetItinerary';
 import TransportItinerary from '../components/TransportItinerary';
 import ItineraryBG from '../assets/ItineraryBG.svg'
 import { Activity, Bed, DollarSign, Truck } from 'lucide-react'
+import actIcon from '../assets/activitiesIcon.svg'
+import transportIcon from '../assets/transportIcon.svg'
 // import TransportItinerary from '../components/TransportItinerary';
 
 function ItineraryPage() {
@@ -127,7 +129,7 @@ function ItineraryPage() {
                       : 'text-white hover:bg-[#EE4266]')
                   }
                 >
-                  <Activity className="w-6 h-6" />
+                  <img src={actIcon} className="w-6 h-6" />
                 </button>
               </li>
 
@@ -172,7 +174,7 @@ function ItineraryPage() {
                       : 'text-white hover:bg-[#EE4266]')
                   }
                 >
-                  <Truck className="w-6 h-6" />
+                  <img src={transportIcon} className="w-6 h-6" />
                 </button>
               </li>
             </ul>
@@ -181,8 +183,8 @@ function ItineraryPage() {
           {/* main canvas */}
           <div className='flex flex-col w-[85vw]'>
             <div className='justify-between flex mb-2'>
-              <p className='text-[#EE4266] font-medium'><span className='font-bold'>Itinerary name:</span> {itineraryName}</p>
-              <p className='text-[#EE4266] font-medium'><span className='font-bold'>Date: </span>
+              <p className='text-[#167DE5] font-medium'><span className='font-bold'>Itinerary name:</span> {itineraryName}</p>
+              <p className='text-[#167DE5] font-medium'><span className='font-bold'>Date: </span>
                 {new Date(startDate).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "numeric",

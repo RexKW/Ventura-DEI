@@ -66,31 +66,31 @@ function Account() {
         <div className=' relative z-2 p-10  w-screen h-screen  '>
           {
             viewSub ? (
-              <div className='w-full h-full flex justifys-center'>
-                <div className='px-10 bg-white border-2 w-[70%]  border-[#167DE5] justify-center items-center flex flex-col rounded-xl'>
+              <div className='w-[90%] h-full flex justify-center'>
+                <div className='px-30 bg-white border-2 w-full  border-[#167DE5] justify-center items-center flex flex-col rounded-xl'>
                 
-                  <div className="flex flex-col items-center justify-center w-full md:flex-row">
+                  <div className="flex flex-col items-center justify-between w-full md:flex-row">
                     {/* ── Left info column ── */}
                     
-                    <div className="md:w-1/3 pr-6 border-b md:border-b-0  mb-6 md:mb-0">
+                    <div className="border-b md:border-b-0  mb-6 md:mb-0">
                       <div className="flex items-center mb-6">
-                      <h2 className="text-2xl text-pink-500 font-bold">Subscription</h2>
+                      <h2 className="text-4xl text-pink-500 font-bold">Subscription</h2>
                       </div>
                       <div className="space-y-4 text-sm">
                         <div>
-                          <p className="text-gray-500 uppercase">Current Plan</p>
+                          <p className="text-gray-500 text-xl font-medium uppercase">Current Plan</p>
                           <p className="mt-1 font-medium">Free</p>
                         </div>
                         <div>
-                          <p className="text-gray-500 uppercase">Renewal date / Expiry</p>
+                          <p className="text-gray-500 text-xl font-medium uppercase">Renewal date / Expiry</p>
                           <p className="mt-1 font-medium">DD/MM/2028</p>
                         </div>
                         <div>
-                          <p className="text-gray-500 uppercase">Payment methods</p>
+                          <p className="text-gray-500 text-xl font-medium uppercase">Payment methods</p>
                           <p className="mt-1 font-medium">Credit</p>
                         </div>
                         <div>
-                          <p className="text-gray-500 uppercase">Billing history</p>
+                          <p className="text-gray-500 text-xl font-medium uppercase">Billing history</p>
                           <a
                             href=""
                             target="_blank"

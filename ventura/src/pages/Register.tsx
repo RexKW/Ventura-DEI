@@ -38,6 +38,11 @@ function Register() {
       fetchAUser();
     };
 
+    const handlePopUp = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setPopUp(!popUp);
+    }
+
   return (
     <div className='flex flex-col w-full bg-[#F9F9F9] h-[100vh] justify-center items-center content-center relative'>
         <img src={BackCity} alt="leftBack" className='absolute bottom-0 left-[-20%] w-[50%] md:w-[20%] md:left-0' draggable="false" />
@@ -66,8 +71,10 @@ function Register() {
           <input name="password" type='password' className=' rounded-[10px] bg-[#F9F9F9] border-2 border-[#167DE5] p-2 focus:bg-pink-200 transition duration-200'value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
         </div>
 
-        <div>
-
+        <div className='flex items-center gap-1 justify-center mt-4'>
+            <p className='flex items-center'>I have agreed to the <input type="checkbox" className='flex items-end' checked={agreement} onChange={(e) => setAgreement(e.target.checked)}/></p>
+            <button onClick={handlePopUp}>Terms & Conditions</button>
+            
         </div>
 
         <div className='flex mt-2 flex-col'>
@@ -79,6 +86,31 @@ function Register() {
         </form>
         
       </div>
+      {popUp && (
+  <div
+    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 mx-4">
+      <h2 className="text-xl font-semibold mb-4">Terms & Conditions</h2>
+      <div className="overflow-y-auto max-h-60 text-sm leading-relaxed">
+        {/* Your terms text here */}
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+          vehicula magna et nisl feugiat, nec ultrices orci tincidunt.
+        </p>
+        {/* … */}
+      </div>
+      <button
+        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        onClick={handlePopUp}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
       
     </div>
   )

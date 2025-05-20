@@ -12,6 +12,7 @@ import ItineraryPage from './pages/ItineraryPage';
 import CreateItinerary from './pages/CreateItinerary';
 import InvitedItinerariesList from './pages/InvitedItinerariesList';
 import Account from './pages/Account';
+import Subscription from './pages/Subscription';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path='/account' element={<Account/>}/>
                 <Route path='/'/>
                 <Route path='/explore'/>
+                <Route path='/subscription' element={<Subscription/>}/>
               </Routes>
             </PrivateRoute>
           }/>
