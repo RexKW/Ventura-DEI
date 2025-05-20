@@ -22,6 +22,7 @@ function Register() {
               }else{
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('subscription', "free");
                 navigate("/Ventura/itineraries");
                 
               }

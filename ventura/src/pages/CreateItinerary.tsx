@@ -21,10 +21,12 @@ function CreateItinerary() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [request, setRequest] = useState('');
+  const [itineraries,setItineraries] = useState<any[]>([]);
   const [isPremium, setIsPremium] = useState(false);
   const [itineraryCount, setItineraryCount] = useState(0);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const sub = localStorage.getItem('subscription');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -66,14 +68,25 @@ function CreateItinerary() {
       };
 
       const validateSection1 = () => {
-
         if (!name.trim()) return false;
+
+        if(sub === 'free' && token){
+          if(itineraryCount>2){
+            return false
+          }
+          
+            
+        }
+          
+          
 
         if (!startDate || !endDate) return false;
 
         if (new Date(endDate) < new Date(startDate)) return false;
+
         return true;
       };
+
 
       const validateSection2 = () => {
         if (!accomodationBudget) return false;

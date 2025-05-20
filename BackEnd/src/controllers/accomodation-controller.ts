@@ -45,6 +45,11 @@ export class AccomodationController {
         }
     }
 
+
+    static async getAccomodations(req: Request, res:Response, next: NextFunction){
+
+    }
+
     static async getSavedAccomodations(req: Request, res: Response, next: NextFunction){
         try{
             const savedAccommodation = await AccomodationService

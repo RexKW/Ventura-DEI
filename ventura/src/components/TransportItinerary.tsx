@@ -14,22 +14,22 @@ interface FsqPlace {
 }
 
 interface Activity {
-        id: number;
-        name: string;
-        description: string;
-        start_time: Date;
-        end_time: Date;
-        type: string;
-        cost: Decimal;
-        day_id: number;
-        location_name: string;
-        location_address: string;
-        location_name2?: string | null;
-        location_link?: string;
-        location_address2?: string | null;
-        location_link2?:   string | null;
-        method?: string | null;
-      }
+  id: number;
+  name: string;
+  description: string;
+  start_time: Date;
+  end_time: Date;
+  type: string;
+  cost: Decimal;
+  day_id: number;
+  location_name: string;
+  location_address: string;
+  location_name2?: string | null;
+  location_link?: string;
+  location_address2?: string | null;
+  location_link2?: string | null;
+  method?: string | null;
+}
 
 interface TransportItineraryProps {
   token: string;
@@ -43,11 +43,11 @@ interface ScheduleDay {
 
 export default function TransportItinerary() {
   const [days, setDays] = useState<ScheduleDay[]>([]);
-  const [selectedDayId, setSelectedDayId] = useState<number| null>(null);
+  const [selectedDayId, setSelectedDayId] = useState<number | null>(null);
   const [transports, setTransports] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const token = localStorage.getItem('token');
-          const { id } = useParams();
+  const { id } = useParams();
 
   // 1) load available days for this itinerary
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function TransportItinerary() {
         >
           {days.map((d, idx) => (
             <option key={d.id} value={d.id}>
-              Day {idx+1} – {new Date(d.date).toLocaleDateString()}
+              Day {idx + 1} – {new Date(d.date).toLocaleDateString()}
             </option>
           ))}
         </select>
@@ -110,42 +110,24 @@ export default function TransportItinerary() {
         <p>No transportation scheduled for this day.</p>
       )}
       {!loading && transports.map(act => (
-        <div key={act.id} className="border p-4 rounded-lg shadow-sm">
-          <h3 className="text-xl font-semibold mb-2">{act.name}</h3>
-          <p className="text-sm text-gray-600">
-            {new Date(act.start_time).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
-            {' '}–{' '}
-            {new Date(act.end_time).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
-          </p>
-          {act.method && (
-            <p className="mt-1">
-              <span className="font-medium">Method:</span> {act.method}
-              {/* {act.method === 'Flight' && act.flightNumber && (
-                <span className="ml-2">(Flight No. {act.flightNumber})</span>
-              )} */}
+        <div key={act.id} className="border p-4 rounded-lg flex justify-between items-center shadow-sm">
+          <div className='flex flex-col basis-[15%]'>
+            <h3 className="text-xl font-semibold mb-2">{act.name}</h3>
+            <p className="text-sm text-gray-600">
+              {new Date(act.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {' '}–{' '}
+              {new Date(act.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
-          )}
-          <div className="mt-2">
-            <p className="font-medium">From:</p>
-            <p className="text-sm">{act.location_name}</p>
-            {act.location_link && (
-              <a
-                href={act.location_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline text-sm"
-              >
-                View on map
-              </a>
-            )}
           </div>
-          {act.location_name2 && (
+
+
+          <div className='flex basis-[25%] justify-between'>
             <div className="mt-2">
-              <p className="font-medium">To:</p>
-              <p className="text-sm">{act.location_name2}</p>
-              {act.location_link2 && (
+              <p className="font-medium">From:</p>
+              <p className="text-sm">{act.location_name}</p>
+              {act.location_link && (
                 <a
-                  href={act.location_link2}
+                  href={act.location_link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 underline text-sm"
@@ -154,41 +136,62 @@ export default function TransportItinerary() {
                 </a>
               )}
             </div>
-          )}
-          <div>
-        {act.method === 'flight' && (act as any).flightNumber && (
-          <a
-            href={`https://flightaware.com/live/flight/${(act as any).flightNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-          >
-            Track Flight {(act as any).flightNumber}
-          </a>
-        )}
+            {act.location_name2 && (
+              <div className="mt-2">
+                <p className="font-medium">To:</p>
+                <p className="text-sm">{act.location_name2}</p>
+                {act.location_link2 && (
+                  <a
+                    href={act.location_link2}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline text-sm"
+                  >
+                    View on map
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
 
-        {(act.method === 'train' || act.method === 'Bus' || act.method === 'Public Transport') && act.location_address && act.location_address2 && (
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(act.location_address)}&destination=${encodeURIComponent(act.location_address2)}&travelmode=transit`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-          >
-            View Transit Directions
-          </a>
-        )}
+          <div className='flex basis-[50%]'>
+            <p className='text-3xl font-medium'>{act.method}</p>
+            {/* {act.method === 'flight' && (act as any).flightNumber && (
+              <a
+                href={`https://flightaware.com/live/flight/${(act as any).flightNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+              >
+                Track Flight {(act as any).flightNumber}
+              </a>
+            )}
 
-        {(act.method === 'car' || act.method === 'Driving' || act.method === 'Rental Car') && act.location_address && act.location_address2 && (
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(act.location_address)}&destination=${encodeURIComponent(act.location_address2)}&travelmode=driving`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition"
-          >
-            View Driving Directions
-          </a>
-        )}
-      </div>
+            {(act.method === 'train' || act.method === 'Bus' || act.method === 'Public Transport') && act.location_address && act.location_address2 && (
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(act.location_address)}&destination=${encodeURIComponent(act.location_address2)}&travelmode=transit`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+              >
+                View Transit Directions
+              </a>
+            )}
+
+            {(act.method === 'car' || act.method === 'Driving' || act.method === 'Rental Car') && act.location_address && act.location_address2 && (
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(act.location_address)}&destination=${encodeURIComponent(act.location_address2)}&travelmode=driving`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition"
+              >
+                View Driving Directions
+              </a>
+            )}
+            {(act.method === 'walk') && (
+              <p>Walk</p>
+            )} */}
+          </div>
         </div>
       ))}
     </div>

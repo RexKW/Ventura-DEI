@@ -40,7 +40,7 @@ export default function AccomodationItinerary() {
       if (!token || !itineraryId) return;
       setLoading(true);
       try {
-        const res = await axios.get('/api/accommodations/getOrCreate', {
+        const res = await axios.get('/api/accommodations/get', {
           headers: { 'X-API-TOKEN': token },
           params: { itineraryId },
         });
@@ -185,7 +185,7 @@ export default function AccomodationItinerary() {
           <button
             onClick={handleSearch}
             disabled={loadingSearch}
-            className="bg-blue-600 text-white px-4 rounded disabled:opacity-50"
+            className="bg-blue-600 text-white px-4 rounded h-full py-2 disabled:opacity-50"
           >
             {loadingSearch ? 'Searching…' : 'Search'}
           </button>

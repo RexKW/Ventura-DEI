@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import SideNavbar from '../components/SideNavbar';
 import { getAllOwnedItineraries } from '../apis/ItinerariesCRUD';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CityBG from "../assets/CityBG.svg"
 import gsap from 'gsap';
 import Credit from '../assets/Credit.svg'
@@ -15,9 +15,12 @@ function Account() {
   const [isPremium, setIsPremium] = useState(false);
   const [itineraryCount, setItineraryCount] = useState(0);
   const token = localStorage.getItem('token');
+  const subscription = localStorage.getItem('subscription');
   const [current, setCurrent] = useState('')
   const [nextPwd, setNextPwd] = useState('')
   const [viewSub, setViewSub] = useState(false)
+  const navigate = useNavigate();
+  const sub = localStorage.getItem('subscription');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,10 +28,7 @@ function Account() {
   }
 
   const toggleSub = () => {
-    if(viewSub){
-      alert("Subscription Updated")
-    }
-    setViewSub(!viewSub)
+    navigate("/Ventura/subscription")
   }
 
 
@@ -65,76 +65,6 @@ function Account() {
         </div>
         <div className=' relative z-2 p-10  w-screen h-screen  '>
           {
-            viewSub ? (
-              <div className='w-[90%] h-full flex justify-center'>
-                <div className='px-30 bg-white border-2 w-full  border-[#167DE5] justify-center items-center flex flex-col rounded-xl'>
-                
-                  <div className="flex flex-col items-center justify-between w-full md:flex-row">
-                    {/* ── Left info column ── */}
-                    
-                    <div className="border-b md:border-b-0  mb-6 md:mb-0">
-                      <div className="flex items-center mb-6">
-                      <h2 className="text-4xl text-pink-500 font-bold">Subscription</h2>
-                      </div>
-                      <div className="space-y-4 text-sm">
-                        <div>
-                          <p className="text-gray-500 text-xl font-medium uppercase">Current Plan</p>
-                          <p className="mt-1 font-medium">Free</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-500 text-xl font-medium uppercase">Renewal date / Expiry</p>
-                          <p className="mt-1 font-medium">DD/MM/2028</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-500 text-xl font-medium uppercase">Payment methods</p>
-                          <p className="mt-1 font-medium">Credit</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-500 text-xl font-medium uppercase">Billing history</p>
-                          <a
-                            href=""
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-1 inline-flex items-center text-pink-500 hover:underline"
-                          >
-                            {/* <Download className="w-4 h-4 mr-1" /> */}
-                            Download billing history
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* ── Right plan cards ── */}
-                    <div className="w-[40%] grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      {[
-                        { name: 'Standard', color: 'bg-blue-500' },
-                        { name: 'Premium', color: 'bg-yellow-500' },
-                      ].map(plan => (
-                        <div
-                          key={plan.name}
-                          className="bg-gray-100 rounded-2xl p-6 flex flex-col items-center"
-                        >
-                          {/* Placeholder “card” graphic */}
-                          <div
-                            className={`${plan.color} w-32 h-20 rounded-lg `}
-                          />
-
-                          <h3 className="mt-4 text-xl font-bold">{plan.name}</h3>
-                          <p className="mt-1 text-3xl font-bold">$</p>
-
-                          <button
-                            onClick={toggleSub}
-                            className="mt-5 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full transition"
-                          >
-                            Change Plan
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
               <div className='w-full h-full flex'>
                 <div className='px-10 bg-white border-2 border-[#167DE5] justify-start items-center flex flex-col rounded-xl'>
                   <svg
@@ -153,7 +83,7 @@ function Account() {
                   </svg>
                   <p className='text-3xl text-[#EE4266] font-bold mt-[-15%]'>{username}</p>
                   {
-                    isPremium ? (
+                     sub == 'premium' ? (
                       <div className='px-10 mt-2 py-2 bg-[#167DE5] rounded-[30px] text-white'>
                         <p>Premium</p>
                       </div>
@@ -169,7 +99,13 @@ function Account() {
                       <p>Hello, I am student who like to travel abroad</p>
                     </div>
                   </div>
-                  <div className='flex flex-col mt-10'>
+                  <button
+                        onClick={toggleSub}
+                        className="w-full mt-5 bg-pink-500 text-white rounded-full py-2 text-center font-medium hover:bg-pink-600 transition"
+                      >
+                        Change Subsciption
+                      </button>
+                  <div className='flex flex-col my-5'>
                     <p className='text-gray-400 font-medium'>Joined Since</p>
                     <p className='font-bold -mt-[5%]'>DD/MM/YYY</p>
                   </div>
@@ -211,6 +147,7 @@ function Account() {
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-800">+62 ....</p>
                       </div>
+                      
                     </div>
 
 
@@ -280,17 +217,10 @@ function Account() {
                           Notification settings
                         </label>
                         <p className="mt-1 text-sm text-gray-800">
+                          None
                         </p>
                       </div>
 
-                      <div className="col-span-2">
-                        <label className="block text-xs text-gray-500 uppercase">
-                          My Plan
-                        </label>
-                        <p className="mt-1 text-sm font-semibold text-pink-500">
-                          <button onClick={toggleSub}><p>Subsciption</p></button>
-                        </p>
-                      </div>
                     </div>
                   </div>
 
@@ -344,7 +274,7 @@ function Account() {
                 </div>
 
               </div>
-            )
+            
           }
 
 
