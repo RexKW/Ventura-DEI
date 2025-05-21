@@ -39,6 +39,10 @@ class AccomodationController {
             }
         });
     }
+    static getAccomodations(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
     static getSavedAccomodations(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

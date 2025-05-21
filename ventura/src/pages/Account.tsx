@@ -27,8 +27,22 @@ function Account() {
 
   }
 
-  const toggleSub = () => {
-    navigate("/Ventura/subscription")
+  const buySub = () => {
+    navigate("/Ventura/Subscription")
+  }
+
+
+  const handleExitAndNavigate = (
+  ) => {
+    gsap.to(".slideIn", {
+      x: window.innerWidth,
+      duration: 0.75,
+      ease: "power1.inOut",
+      onComplete: () => {
+        navigate("/Ventura/subscription")
+
+      }
+    })
   }
 
 
@@ -63,9 +77,9 @@ function Account() {
         <div className='bg absolute z-0 flex w-screen bottom-0'>
           <img src={CityBG} alt="cityBack" className='absolute bottom-0 left-0  opacity-[25%]' draggable="false" />
         </div>
-        <div className=' relative z-2 p-10  w-screen h-screen  '>
+        <div className=' relative z-2 p-10  w-full h-screen  '>
           {
-              <div className='w-full h-full flex'>
+              <div className='w-full h-full justify-center flex'>
                 <div className='px-10 bg-white border-2 border-[#167DE5] justify-start items-center flex flex-col rounded-xl'>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -83,15 +97,27 @@ function Account() {
                   </svg>
                   <p className='text-3xl text-[#EE4266] font-bold mt-[-15%]'>{username}</p>
                   {
-                     sub == 'premium' ? (
+                     sub == 'premium' && (
                       <div className='px-10 mt-2 py-2 bg-[#167DE5] rounded-[30px] text-white'>
                         <p>Premium</p>
                       </div>
-                    ) : (
+                    )
+                  }
+                  {
+                    sub == 'free' && (
+                      <div className='px-10 mt-2 py-2 bg-gray-400 rounded-[30px] text-white'>
+                        <p>Free</p>
+                      </div>
+                    )
+                    
+                  }
+                  {
+                    sub == 'standard' && (
                       <div className='px-10 mt-2 py-2 bg-[#167DE5] rounded-[30px] text-white'>
                         <p>Standard</p>
                       </div>
                     )
+                    
                   }
                   <div className='flex flex-col w-full mt-10'>
                     <p>Bio</p>
@@ -100,7 +126,7 @@ function Account() {
                     </div>
                   </div>
                   <button
-                        onClick={toggleSub}
+                        onClick={handleExitAndNavigate}
                         className="w-full mt-5 bg-pink-500 text-white rounded-full py-2 text-center font-medium hover:bg-pink-600 transition"
                       >
                         Change Subsciption

@@ -39,6 +39,7 @@ export interface ActivityResponse {
   end_time: Date;
   type: string;
   cost: Decimal;
+  method?: string | null;
   location_name: string;
   location_address: string;
   location_link: string;
@@ -57,6 +58,7 @@ export function toActivityResponse(activity: Activity): ActivityResponse {
     end_time: activity.end_time,
     type: activity.type,
     cost: activity.cost,
+    method: activity.method,
     location_name: activity.location_name,
     location_address: activity.location_address,
     location_link: activity.location_link,
@@ -76,6 +78,7 @@ export function toActivityResponseList(prismaTodo: Activity[]): ActivityResponse
         end_time: activity.end_time,
         type: activity.type,
         cost: activity.cost,
+        method: activity.method,
         location_name: activity.location_name,
         location_address: activity.location_address,
         location_link: activity.location_link,

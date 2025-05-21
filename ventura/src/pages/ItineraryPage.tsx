@@ -177,6 +177,7 @@ function ItineraryPage() {
                   <img src={transportIcon} className="w-6 h-6" />
                 </button>
               </li>
+              
             </ul>
           </div>
 

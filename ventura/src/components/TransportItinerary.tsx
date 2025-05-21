@@ -154,8 +154,8 @@ export default function TransportItinerary() {
             )}
           </div>
 
-          <div className='flex basis-[50%]'>
-            <p className='text-3xl font-medium'>{act.method}</p>
+          <div className='flex basis-[50%] justify-center'>
+            <p className='text-3xl font-medium text-center'>{act.method}</p>
             {/* {act.method === 'flight' && (act as any).flightNumber && (
               <a
                 href={`https://flightaware.com/live/flight/${(act as any).flightNumber}`}

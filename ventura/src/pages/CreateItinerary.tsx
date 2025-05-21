@@ -27,6 +27,7 @@ function CreateItinerary() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const sub = localStorage.getItem('subscription');
+  const [itineraryLeft, setitineraryLeft] = useState(3)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -49,6 +50,10 @@ function CreateItinerary() {
   useGSAP(() => {
     gsap.from(".slideIn", { x:1920, opacity:1, duration:0.75});
   });
+  const buySub = () => {
+    navigate("/Ventura/Subscription")
+  }
+
 
   
 
@@ -245,6 +250,15 @@ function CreateItinerary() {
                     </form>
                 </div>
               </div>
+
+              {
+            (sub === 'free' || sub === 'standard') && (
+              <div className='bg-white justify-between flex absolute items-center z-5 bottom-[5%] w-[75%] left-[15%] rounded-2xl border-2 border-[#167DE5]  p-5'>
+                <p className='text-xl'>{itineraryLeft - itineraryCount} free plan Left</p>
+                <button onClick={buySub} className='bg-pink-500 px-20 py-2 text-white rounded-3xl hover:bg-pink-600 transition duration-300'>Buy Now</button>
+              </div>
+            )
+          }
           
         </div>
         

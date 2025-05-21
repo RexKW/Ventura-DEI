@@ -5,6 +5,7 @@ import { logout } from '../apis/UserCRUD'
 
 function SideNavbar() {
   const navigate = useNavigate()
+  const subs = localStorage.getItem('subscription')
 
   const handleExitAndNavigate = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -42,9 +43,26 @@ function SideNavbar() {
 
 
   return (
-    <div>
+    <div className='relative z-2'>
         <nav className='bg-[#167DE5] flex flex-col h-[100vh] px-5 justify-center items-center'>
         <ul className='flex flex-col gap-10  justify-center items-center'>
+          {
+            subs == 'premium' && (
+              <li>
+
+            <svg fill="#F5C636" className='w-10 h-10' height="200px" width="200px" version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 240.5"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M41.316,196.312h173.36v30.237H41.316V196.312z M235.842,59.236c-11.133,0-20.158,9.025-20.158,20.158 c0,3.212,0.771,6.237,2.107,8.932l-41.834,20.702l-37.704-63.706c5.92-3.512,9.901-9.949,9.901-17.331 c0-11.133-9.025-20.158-20.158-20.158s-20.158,9.025-20.158,20.158c0,7.382,3.981,13.819,9.901,17.331L80.194,108.76L39.191,88.364 c1.348-2.704,2.125-5.743,2.125-8.97c0-11.133-9.025-20.158-20.158-20.158S1,68.262,1,79.395c0,11.133,9.025,20.158,20.158,20.158 c1.34,0,2.646-0.137,3.913-0.387l15.237,76.987h175.375l16.046-77.023c1.328,0.275,2.702,0.422,4.112,0.422 c11.133,0,20.158-9.025,20.158-20.158C256,68.262,246.975,59.236,235.842,59.236z"></path> </g></svg>
+          </li> 
+            )
+
+          }
+          {
+            subs == 'standard' && (
+              <li>
+                <svg fill="#D9D9D9"  className='w-10 h-10' height="200px" width="200px" version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 240.5" stroke="#D9D9D9"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M41.316,196.312h173.36v30.237H41.316V196.312z M235.842,59.236c-11.133,0-20.158,9.025-20.158,20.158 c0,3.212,0.771,6.237,2.107,8.932l-41.834,20.702l-37.704-63.706c5.92-3.512,9.901-9.949,9.901-17.331 c0-11.133-9.025-20.158-20.158-20.158s-20.158,9.025-20.158,20.158c0,7.382,3.981,13.819,9.901,17.331L80.194,108.76L39.191,88.364 c1.348-2.704,2.125-5.743,2.125-8.97c0-11.133-9.025-20.158-20.158-20.158S1,68.262,1,79.395c0,11.133,9.025,20.158,20.158,20.158 c1.34,0,2.646-0.137,3.913-0.387l15.237,76.987h175.375l16.046-77.023c1.328,0.275,2.702,0.422,4.112,0.422 c11.133,0,20.158-9.025,20.158-20.158C256,68.262,246.975,59.236,235.842,59.236z"></path> </g></svg>
+              </li>
+            )
+          }
+          
             <li>
                 <NavLink to="/Ventura/itineraries" onClick={e => handleExitAndNavigate(e, "/Ventura/itineraries")}>
                 {({ isActive }) => (

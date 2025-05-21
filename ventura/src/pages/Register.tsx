@@ -73,8 +73,9 @@ function Register() {
         </div>
 
         <div className='flex items-center gap-1 justify-center mt-4'>
-            <p className='flex items-center'>I have agreed to the <input type="checkbox" className='flex items-end' checked={agreement} onChange={(e) => setAgreement(e.target.checked)}/></p>
-            <button onClick={handlePopUp}>Terms & Conditions</button>
+            <p className='flex items-center text-xs text-gray-400'>I have agreed to the</p>
+            <button onClick={handlePopUp} className='text-xs text-gray-400'>Terms & Conditions</button>
+             <input type="checkbox" className='flex items-end' checked={agreement} onChange={(e) => setAgreement(e.target.checked)}/>
             
         </div>
 
@@ -97,10 +98,59 @@ function Register() {
       <h2 className="text-xl font-semibold mb-4">Terms & Conditions</h2>
       <div className="overflow-y-auto max-h-60 text-sm leading-relaxed">
         {/* Your terms text here */}
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-          vehicula magna et nisl feugiat, nec ultrices orci tincidunt.
-        </p>
+        <div className="terms-section">
+        <h2 className="terms-heading">1. Consent of Use / Persetujuan Penggunaan</h2>
+        <p><strong>EN:</strong> By accessing and using Ventura, you are deemed to have read, understood, and agreed to all applicable terms and conditions. If you do not agree to any part of these terms, please refrain from using our services.</p>
+        <p><strong>ID:</strong> Dengan mengakses dan menggunakan Ventura, Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan yang berlaku. Jika Anda tidak menyetujui sebagian atau seluruh ketentuan ini, mohon untuk tidak menggunakan layanan kami.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">2. Data Collection and Use / Pengumpulan dan Penggunaan Data</h2>
+        <p><strong>EN:</strong> Ventura collects personal information such as name, email, travel preferences, and your itinerary data for internal purposes. This data is used to:</p>
+        <ul>
+          <li>Support your travel planning process</li>
+          <li>Customize features and relevant recommendations</li>
+          <li>Improve and develop our platform</li>
+        </ul>
+        <p>Ventura will not share, sell, or distribute your personal data to any third party not affiliated with our services.</p>
+        <p><strong>ID:</strong> Ventura mengumpulkan informasi pribadi seperti nama, email, preferensi perjalanan, dan data itinerary Anda untuk keperluan internal. Data ini digunakan untuk:</p>
+        <ul>
+          <li>Membantu proses perencanaan perjalanan Anda</li>
+          <li>Menyesuaikan fitur dan rekomendasi yang relevan</li>
+          <li>Memperbaiki dan mengembangkan platform kami</li>
+        </ul>
+        <p>Ventura tidak akan membagikan, menjual, atau menyebarluaskan data pribadi Anda kepada pihak ketiga yang tidak berhubungan dengan layanan kami.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">3. Platform Usage / Penggunaan Platform</h2>
+        <p><strong>EN:</strong> You agree not to use Ventura for illegal activities, system disruption, or interfering with other users’ experiences. Any violation may result in permanent account suspension.</p>
+        <p><strong>ID:</strong> Anda setuju untuk tidak menggunakan Ventura untuk aktivitas ilegal, merusak sistem, atau mengganggu pengalaman pengguna lain. Setiap pelanggaran dapat menyebabkan pemblokiran akun Anda secara permanen.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">4. User-Generated Content / Konten Pengguna</h2>
+        <p><strong>EN:</strong> All content you upload or share (such as itinerary notes or wishlists) is your sole responsibility. Ventura is not liable for any offensive or third-party-infringing content.</p>
+        <p><strong>ID:</strong> Semua konten yang Anda unggah atau bagikan (seperti catatan itinerary atau wishlist) adalah tanggung jawab pribadi Anda. Ventura tidak bertanggung jawab atas konten yang menyinggung atau melanggar hak pihak ketiga.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">5. Account Security / Keamanan Akun</h2>
+        <p><strong>EN:</strong> You are responsible for maintaining the confidentiality of your login credentials. If you notice any suspicious activity on your account, please contact our team immediately.</p>
+        <p><strong>ID:</strong> Anda bertanggung jawab menjaga keamanan informasi login Anda. Jika terjadi aktivitas mencurigakan pada akun Anda, segera hubungi tim kami.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">6. Changes to Terms / Perubahan Ketentuan</h2>
+        <p><strong>EN:</strong> Ventura reserves the right to change these terms at any time. Updates will be posted on the platform and effective from the date of publication.</p>
+        <p><strong>ID:</strong> Ventura berhak untuk mengubah syarat dan ketentuan ini sewaktu-waktu. Perubahan akan diinformasikan melalui platform dan berlaku sejak tanggal pembaruan.</p>
+      </div>
+        <br/>
+      <div className="terms-section">
+        <h2 className="terms-heading">7. Contact Us / Kontak</h2>
+        <p><strong>EN:</strong> For further questions regarding this policy, please contact us via [email/contact section].</p>
+        <p><strong>ID:</strong> Untuk pertanyaan lebih lanjut mengenai kebijakan ini, Anda dapat menghubungi kami melalui [email/contact section].</p>
+      </div>
         {/* … */}
       </div>
       <button

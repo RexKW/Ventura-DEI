@@ -124,10 +124,10 @@ function ItinerariesList() {
         </div>
 
               {
-            subs == 'free' || subs == 'standard' && (
+            (subs === 'free' || subs === 'standard') && (
               <div className='bg-white justify-between flex absolute items-center z-5 bottom-[5%] w-[75%] left-[15%] rounded-2xl border-2 border-[#167DE5]  p-5'>
                 <p className='text-xl'>{itineraryLeft - itineraries.length} free plan Left</p>
-                <button onClick={buySub} className='bg-[#F6C93B] px-20 py-2 text-white rounded-3xl hover:bg-[#FFD963] transition duration-300'>Buy Now</button>
+                <button onClick={buySub} className='bg-pink-500 px-20 py-2 text-white rounded-3xl hover:bg-pink-600 transition duration-300'>Buy Now</button>
               </div>
             )
           }

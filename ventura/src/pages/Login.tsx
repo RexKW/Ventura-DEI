@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { login } from '../apis/UserCRUD'
 import { useNavigate } from 'react-router-dom'
-import FrontCity from "../assets/FrontCity.svg"
-import BackCity from "../assets/BackCity.svg"
+import FrontCity from "../assets/FrontLogin.svg"
+import BackCity from "../assets/BackLogin.svg"
 import AirportCut from "../assets/AirportCut.svg"
 import { useRef } from 'react';
 import gsap from 'gsap';
@@ -69,10 +69,8 @@ function Login() {
 
   return (
     <div className='flex flex-col w-full h-[100vh] bg-[#F9F9F9] overflow-y-hidden justify-center items-center content-center relative'>
-        <img src={BackCity} alt="leftBack" className='absolute city bottom-0  opacity-[97.5%] left-[-20%] w-[50%] md:w-[20%] md:left-0' draggable="false" />
-        <img src={FrontCity}  alt="leftFront" className='absolute citySlow bottom-0  opacity-[97.5%] left-[-20%] w-[50%] md:w-[25%] md:left-0 scale-x-[-1]' draggable="false" />
-        <img src={BackCity}   alt="rightBack" className='absolute city bottom-0  opacity-[97.5%] right-[-20%] w-[50%] md:w-[20%] md:right-0 scale-x-[-1]' draggable="false" />
-        <img src={FrontCity}  alt="rightFront" className='absolute citySlow bottom-0  opacity-[97.5%] right-[-20%] w-[50%] md:w-[25%] md:right-0' draggable="false" />
+        <img src={BackCity} alt="leftBack" className='absolute city bottom-0  opacity-[97.5%] left-[-20%] w-screen md:left-0' draggable="false" />
+        <img src={FrontCity}  alt="leftFront" className='absolute citySlow bottom-0  opacity-[97.5%] left-[-20%] w-screen md:left-0 scale-x-[-1]' draggable="false" />
         <img src={AirportCut} alt="" className='absolute citySlow bottom-[-45%] w-[25%]'/>
       <div className='bg-[#F9F9F9] shadow-md scale-[97.5%] box-1 w-[90vw] z-3 p-5 px-7 md:w-[25vw] rounded-[20px]'>
         <p className='w-full text-center text-2xl mb-5 batman text-black font-bold'>Login</p>
