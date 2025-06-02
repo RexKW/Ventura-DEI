@@ -168,24 +168,14 @@ export default function ActivitiesItinerary() {
       
 
 useEffect(()  => {
-    // setSchedules(dummySchedules);
-    //   setSelectedDayId(dummySchedules[0].id);
     async function loadDays(){
     if(token && id){
     const response = await getAllDays(token, id);
     const days: SchedulePerDay[] = response.data;
     setSchedules(days);
     if (days.length > 0) setSelectedDayId(days[0].id);
-          // Compute min/max from itinerary dates using the fetched array directly
       const dates = days.map(d => new Date(d.date));
       const sorted = dates.sort((a, b) => a.getTime() - b.getTime());
-      // fetch(`/api/schedule-per-day?itineraryId=${id}`)
-      //   .then((res) => res.json())
-      //   .then((data: SchedulePerDay[]) => {
-      //     setSchedules(data);
-      //     if (data.length > 0) setSelectedDayId(data[0].id);
-      //   })
-      //   .catch(console.error);
     }
   }
   if (token && id) loadDays();
@@ -292,16 +282,24 @@ useEffect(()  => {
 
           {/* Activity blocks */}
           {activities.map((act) => {
+                const typeToColor: Record<Activity["type"], string> = {
+                  Transportation: "bg-green-200",
+                  Entertainment:   "bg-red-200",
+                  Culinary:        "bg-yellow-200",
+                  Accommodation:   "bg-purple-200",
+                  Others:          "bg-blue-200",
+                };
                 const top = toPx((act as any).start);
                 const height = toPx((act as any).end) - top;
+                const color  = typeToColor[act.type] ?? "bg-gray-200";
                 return (
                   <div
                     key={act.id}
-                    className="absolute left-16 right-2 bg-blue-200 items-center flex px-2 rounded p-1 cursor-pointer hover:bg-blue-300"
+                    className={`absolute left-16 right-2 ${color} rounded-xl items-center flex px-2 rounded p-1 cursor-pointer hover:bg-[#EE4266] transition duration-100 hover:text-white text-gray-800`}
                     style={{ top: `${top}px`, height: `${height}px` }}
                     onClick={() => setSelectedActivity(act)}
                   >
-                    <span className="text-xs font-medium text-gray-800">{act.name}</span>
+                    <span className="text-xs font-medium">{act.name}</span>
                   </div>
                 );
               })}

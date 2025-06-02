@@ -28,6 +28,7 @@ function CreateItinerary() {
   const token = localStorage.getItem('token');
   const sub = localStorage.getItem('subscription');
   const [itineraryLeft, setitineraryLeft] = useState(3)
+    const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -59,24 +60,36 @@ function CreateItinerary() {
 
     
       const makeItinerary = async (e: React.FormEvent) => {
-        e.preventDefault();
-      
-        if(token){
-          console.log(startDate)
-          console.log(endDate)
-          const itinerary = await createItinerary(token, name, startDate, endDate, request,accomodationBudget, transportationBudget,culinaryBudget,entertainmentBudget,miscBudget)
-          console.log(itinerary)
-          navigate("/Ventura/itineraries");
-        }
-        
-  
-      };
+    e.preventDefault()
+    if (!token) return
+
+    setIsLoading(true)
+    try {
+      await createItinerary(
+        token,
+        name,
+        startDate,
+        endDate,
+        request,
+        accomodationBudget,
+        transportationBudget,
+        culinaryBudget,
+        entertainmentBudget,
+        miscBudget
+      )
+      navigate("/Ventura/itineraries")
+    } catch (err) {
+      console.error("Error creating itinerary", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
       const validateSection1 = () => {
         if (!name.trim()) return false;
 
         if(sub === 'free' && token){
-          if(itineraryCount>2){
+          if(itineraryCount>3){
             return false
           }
           
@@ -124,6 +137,11 @@ function CreateItinerary() {
   
     return (
       <div className='flex bg-[#167DE5]'>
+        {isLoading && (
+        <div className="fixed inset-0 bg-black/25 flex justify-center items-center z-50">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
         <SideNavbar/>
         <div className='slideIn relative w-screen bg-white rounded-tl-[50px]'>
               <div className='bg absolute z-0 flex w-screen bottom-0'>
@@ -244,7 +262,9 @@ function CreateItinerary() {
                           <button type='submit'
                           onClick={makeItinerary}
                           className={`bg-[#167DE5] w-full px-10 p-2 justify-center text-white text-center mt-5 rounded-[10px] hover:bg-pink-400 transition duration-200 batman  ${!validateSection3() ? "opacity-50 cursor-not-allowed" : ""}`}>
-                            Plan Your Itinerary</button>
+                             "Plan Your Itinerary"
+                            
+                           </button>
                         </div>
                       )}
                     </form>

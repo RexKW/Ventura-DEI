@@ -17,6 +17,24 @@ export class ActivityValidation{
         method:            z.string().nullable().optional(),
     })
 
+    static readonly RAWCREATEMANY: ZodType = z.object({
+        day_id:           z.number().nonnegative(),
+        name:             z.string().min(1).max(100),
+        description:      z.string(),
+        type:             z.enum(["Transportation","Entertainment","Culinary","Accommodation","Others"]),
+        start_time:       z.string(),              // still ISO string here
+        end_time:         z.string(),              // still ISO string here
+        cost:             z.number().nonnegative(),
+        location_name:    z.string(),
+        location_address: z.string(),
+        location_link:    z.string(),
+        // optional second‐location fields:
+        location_name2:    z.string().optional().nullable(),
+        location_address2: z.string().optional().nullable(),
+        location_link2:    z.string().optional().nullable(),
+        method:            z.string().optional().nullable(),
+        });
+
     static readonly CREATEMANY: ZodType = z.object({
         day_id: z.number().nonnegative(),
         name: z.string().min(1).max(100),

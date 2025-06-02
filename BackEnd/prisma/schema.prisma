@@ -62,7 +62,7 @@ model Itinerary{
   updated_date DateTime
   start_date DateTime
   end_date DateTime
-  finished Boolean @default(false)
+  finished Boolean @default(true)
 
   // Itinerary_Destinations Itinerary_Destinations[]
   ItineraryUsers Itinerary_Users[]

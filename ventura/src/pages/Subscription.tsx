@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import SideNavbar from '../components/SideNavbar';
 import CityBG from "../assets/CityBG.svg"
 import freeCard from '../assets/freeCard.svg';

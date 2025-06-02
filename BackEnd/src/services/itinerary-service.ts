@@ -1,13 +1,23 @@
 
 import { toItineraryResponseList, ItineraryResponse, ItineraryExploreResponse, toItineraryResponse, CreateItineraryRequest, ItineraryUpdateRequest } from "../model/itinerary-model";
+import { ActivityService } from "../services/activity-service"
+import { CreateActivityRequest } from "../model/activity-model";
 import { Validation } from "../validation/validation";
 import { Itinerary, User } from "@prisma/client";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
+import { ActivityValidation } from "../validation/activity-validation";
 import { ItineraryValidation } from "../validation/itinerary-validation";
 import { logger } from "../application/logging";
 import { parse } from 'date-fns';
 import { finished } from "stream";
+import { Decimal } from "@prisma/client/runtime/library";
+import { z, ZodType } from "zod";
+import axios from "axios";
+import OpenAI from 'openai';
+import { error } from "console";
+
+
 
 export class ItineraryService{
     // static async explore(): Promise<ItineraryExploreResponse[]>{
@@ -242,6 +252,186 @@ export class ItineraryService{
             data: datesToInsert,
         });
 
+        const days = await prismaClient.schedule_Per_Day.findMany({
+            where: { itinerary_id: itinerary1.id },
+            orderBy: { date: "asc" },
+        });
+
+        const dayListForPrompt = days.map(d =>
+            ({ id: d.id, date: d.date.toISOString().slice(0,10) })
+        );
+
+        const prompt = `
+        You are a travel‐planning assistant.
+        The user’s itinerary runs from ${startDate} to ${endDate}, and their request was:
+        "${itinerary_Request.request}"
+
+        An activity type can only have these types ["Transportation","Entertainment","Culinary","Accommodation","Others"]
+        And a method is the method of transportation that can only have these methods ['Flight','Car','Train','Bus', 'Walk']
+        location link uses a google map link of the location
+
+        Here are the day records (use these exact IDs):
+        ${JSON.stringify(dayListForPrompt, null, 2)}
+
+        Make it as detailed as possible
+
+        Respond with *only* this JSON array (no backticks, no comments, no extra text):
+
+        [
+        {
+            "day_id": 0,
+            "name": "",
+            "description": "",
+            "start_time": "2025-05-27T09:00:00Z",
+            "end_time":   "2025-05-27T11:00:00Z",
+            "cost": 0,
+            "type": "Transportation",
+            "location_name": "",
+            "location_address": "",
+            "location_link": ""
+        }
+        ]
+
+        if it is a transportation activity then this is the JSON format:
+        [
+        {
+            "day_id": 0,
+            "name": "",
+            "description": "",
+            "start_time": "2025-05-27T09:00:00Z",
+            "end_time":   "2025-05-27T11:00:00Z",
+            "cost": 0,
+            "type": "Transportation",
+            "location_name": "",
+            "location_address": "",
+            "location_link": "",
+            "location_name2": "",
+            "location_address2": "",
+            "location_link2": "",
+            "method": ""
+        }
+        ]
+        `;
+
+
+
+        const openai = new OpenAI({
+        baseURL: "https://openrouter.ai/api/v1",
+        apiKey: process.env.API_KEY,
+        });
+
+        const completion = await openai.chat.completions.create({
+            model: "deepseek/deepseek-chat-v3-0324:free",
+            messages: [
+            {
+                "role": "user",
+                "content": prompt.trim()
+            }
+            ],
+            
+        });
+        console.log(completion.choices[0].message.content)
+
+        let raw = completion.choices[0].message.content
+        
+
+        if (!raw) {
+  throw new Error("AI returned no content");
+}
+
+raw = raw
+  // remove leading ```json or ```json\n
+  .replace(/^[\s`]*```?json\s*[\r\n]*/i, "")
+  // remove any stray backticks
+  .replace(/```/g, "")
+  // remove trailing asterisks or backticks or whitespace
+  .replace(/[\*`]+\s*$/, "")
+  .trim();
+
+console.log(raw)
+
+// 2️⃣ Parse the JSON string
+let parsedJson: unknown;
+try {
+  parsedJson = JSON.parse(raw);
+} catch (e) {
+  console.error("Invalid JSON from LLM:", raw);
+  throw e;
+}
+
+// 3️⃣ (Optional) Validate the raw shape
+const rawSug = ActivityValidation.RAWCREATEMANY
+  .array()
+  .parse(parsedJson);
+
+// 4️⃣ Map into your domain type
+const requests: CreateActivityRequest[] = rawSug.map(sug => ({
+  day_id:           sug.day_id,
+  name:             sug.name,
+  description:      sug.description,
+  start_time:       new Date(sug.start_time),
+  end_time:         new Date(sug.end_time),
+  cost:             new Decimal(sug.cost),
+  type:             sug.type,
+  location_name:    sug.location_name,
+  location_address: sug.location_address,
+  location_link:    sug.location_link,
+  location_name2:   sug.location_name2 ?? null,
+  location_address2:sug.location_address2 ?? null,
+  location_link2:   sug.location_link2 ?? null,
+  method:           sug.method ?? null,
+}));
+
+// 5️⃣ Re-validate with CREATEMANY by converting back to raw‐JSON shape
+const activitiesToCreate = requests.map((req) => {
+  // Build the “raw” object:
+  const rawForValidation = {
+    day_id:           req.day_id,
+    name:             req.name,
+    description:      req.description,
+    start_time:       req.start_time.toISOString(),
+    end_time:         req.end_time.toISOString(),
+    cost:             req.cost.toNumber(),
+    type:             req.type,
+    location_name:    req.location_name,
+    location_address: req.location_address,
+    location_link:    req.location_link,
+    location_name2:   req.location_name2,
+    location_address2:req.location_address2,
+    location_link2:   req.location_link2,
+    method:           req.method,
+  };
+
+  // Validate that raw shape
+  const validated = Validation.validate(
+    ActivityValidation.CREATEMANY,
+    rawForValidation
+  );
+
+  // Convert back into the final objects Prisma needs:
+  return {
+    day_id:           validated.day_id,
+    name:             validated.name,
+    description:      validated.description,
+    start_time:       new Date(validated.start_time),
+    end_time:         new Date(validated.end_time),
+    cost:             validated.cost,
+    type:             validated.type,
+    location_name:    validated.location_name,
+    location_address: validated.location_address,
+    location_link:    validated.location_link,
+    location_name2:   validated.location_name2,
+    location_address2:validated.location_address2,
+    location_link2:   validated.location_link2,
+    method:           validated.method,
+  };
+});
+
+// 6️⃣ Bulk‐insert in one go:
+await prismaClient.activity.createMany({
+  data: activitiesToCreate,
+});
+         
         await prismaClient.itinerary_Users.create({
             data: {
                 user_id: user.id,
@@ -302,6 +492,37 @@ export class ItineraryService{
 
         return itinerary1
     }
+
+
+
+    static async generateTextRest(prompt: string): Promise<string> {
+    const axios = require("axios");
+    const url   = `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText`;
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      throw new Error("Missing GENAI_API_KEY in env");
+    }
+
+    const res = await axios.post(
+      url,
+      {
+        prompt: {
+          text: prompt,
+        },
+        temperature: 0.7,
+        maxOutputTokens: 256,
+      },
+      {
+        params: { key: apiKey },
+      }
+    );
+
+    const text = res.data.candidates?.[0]?.output;
+    if (typeof text !== "string") {
+      throw new Error("No text returned from GenAI");
+    }
+    return text;
+  }
 
 
     static async updateItinerary(

@@ -50,10 +50,25 @@ const getItinerary = async (token:string, itinerary_id: string) => {
 
         return response.data;
     }catch(error){
-        console.error("Error fetching user:", error); 
+        console.error("Error fetching itinerary:", error); 
         throw error; 
     }
 }
 
+const deleteItinerary = async (token:string, itinerary_id: string) =>{
+    try{
+        const response = await axios.delete(`http://localhost:3000/itinerary/deleteTrip/${itinerary_id}`,
+            {
+                headers: {"Content-Type": "application/json", "X-API-TOKEN": token }
+            }
+        )
 
-export{getAllOwnedItineraries, createItinerary, getItinerary}
+        return response.data
+    }catch(error){
+        console.error("Error deleting: ", error);
+        throw error;
+    }
+}
+
+
+export{getAllOwnedItineraries, createItinerary, getItinerary, deleteItinerary}

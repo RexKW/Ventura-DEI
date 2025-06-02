@@ -18,6 +18,8 @@ import Card2 from "../assets/Card2.svg"
 import Card3 from "../assets/Card3.svg"
 import Credit from "../assets/Credit.svg"
 import Boat from "../assets/Boat.svg"
+import { ScrollSmoother } from 'gsap/all';
+
 
 function LandingPage() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -147,9 +149,9 @@ function LandingPage() {
   }, [intersection4]);
 
   return (
-    <>
+    <div id='smooth-wrapper'>
       <Navbar/>
-      <div className='w-screen bg-[#F9F9F9] relative'>
+      <div className='w-screen bg-[#F9F9F9] relative' id='smooth-content'>
            <div ref={sectionRef} id="home" className='header flex relative justify-center items-center z-2 h-[80vh] md:h-[95vh]'>
               <img src={BackCity} ref={leftBackRef} alt="leftBack" className='absolute bottom-[-12%] left-[-20%] w-[50%] md:w-[20%] md:left-0' draggable="false" />
               <img src={FrontCity} ref={leftFrontRef} alt="leftFront" className='absolute bottom-[-10%] md:bottom-[-8%] left-[-20%] w-[50%] md:w-[25%] md:left-0 scale-x-[-1]' draggable="false" />
@@ -238,7 +240,7 @@ function LandingPage() {
            
 
       </div>
-    </>
+    </div>
   )
 }
 

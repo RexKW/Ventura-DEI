@@ -82,13 +82,13 @@ function ItinerariesList() {
                             })}
                         </div>
 
-                        <p>Generated: ✅ Completed</p>
+                        <p>Finished: ✅ Completed</p>
                       </Link>
                     ) : (
-                      <div
+                      <Link
+                        to={`/Ventura/itineraries/${itinerary.id}`}
                         key={itinerary.id}
-                        className={`${commonClasses} opacity-50`}
-                        aria-disabled="true"
+                        className={commonClasses}
                       >
                         <p className="text-2xl font-medium">{itinerary.name}</p>
                         <div className='flex gap-5'>
@@ -106,8 +106,9 @@ function ItinerariesList() {
                               day: "numeric",
                             })}
                         </div>
-                        <p>Generated: ❌ Not finished</p>
-                      </div>
+
+                        <p>Finished: ❌ Not finished</p>
+                      </Link>
                     );
                   })}
                 </div>
