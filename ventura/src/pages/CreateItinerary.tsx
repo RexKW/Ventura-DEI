@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import SideNavbar from '../components/SideNavbar';
 import { createItinerary, getAllOwnedItineraries } from '../apis/ItinerariesCRUD';
 import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import CityBG from "../assets/CityBG.svg"
 import { getUser } from '../apis/UserCRUD';
 import gsap from 'gsap';

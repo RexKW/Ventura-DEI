@@ -115,7 +115,7 @@ function ItinerariesList() {
               ) : (
                 <div className='  border-white flex-col p-5 rounded-lg flex w-full h-full justify-center items-center'>
                   <p className='text-5xl font-bold text-[#EE4266] '>No itineraries yet</p>
-                  <Link to="/Ventura/itineraries/create" className='mt-5'>Create Itinerary</Link>
+                  <Link to="/Ventura/create" className='mt-5'>Create Itinerary</Link>
                 </div>
               )}
             </>

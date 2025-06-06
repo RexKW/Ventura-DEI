@@ -76,7 +76,7 @@ function Login() {
         <p className='w-full text-center text-2xl mb-5 batman text-black font-bold'>Login</p>
         <form onSubmit={handleLogin}>
             <div className='flex flex-col'>
-            <label className='text-black'>Username</label>
+            <label className='text-black'>  Email</label>
             <input name="email" className=' rounded-[10px] bg-[#F9F9F9] border-2 border-[#167DE5] p-2 focus:bg-pink-200 transition duration-200' value={username} onChange={(e) => setUsername(e.target.value)}/>
             </div>
 

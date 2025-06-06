@@ -273,7 +273,7 @@ export class ItineraryService{
         Here are the day records (use these exact IDs):
         ${JSON.stringify(dayListForPrompt, null, 2)}
 
-        Make it as detailed as possible
+        Make it as detailed as possible where per day it is precise
 
         Respond with *only* this JSON array (no backticks, no comments, no extra text):
 
